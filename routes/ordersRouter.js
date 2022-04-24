@@ -30,7 +30,7 @@ ordersRouter.route('/')
 .post((req, res, next) => {
     Orders.create(req.body)
     .then((order) => {
-        console.log('Order Created ', order);
+        //console.log('Order Created ', order);
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.json(order);
@@ -44,8 +44,6 @@ ordersRouter.route('/')
     res.end('DELETE operation not supported on /orders');
 
 });
-
-
 
 
 
@@ -70,7 +68,6 @@ ordersRouter.route('/:orderId')
     
 })
 .delete((req, res, next) => {
-    
     Orders.findByIdAndRemove(req.params.orderId)
     .then((resp) => {
         res.statusCode = 200;

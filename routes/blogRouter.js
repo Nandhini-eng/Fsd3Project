@@ -28,7 +28,7 @@ blogRouter.route('/')
 .post((req, res, next) => {
     Blogs.create(req.body)
     .then((blogs) => {
-        console.log('Blog Created ', blogs);
+        //console.log('Blog Created ', blogs);
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.json(blogs);
