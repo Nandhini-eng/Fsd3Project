@@ -27,7 +27,7 @@ router.route('/')
         if (user.length == 0) {
           Users.create(req.body)
             .then((user) => {
-              console.log('User Created ', user);
+              //console.log('User Created ', user);
               res.statusCode = 200;
               res.setHeader('Content-Type', 'application/json');
               res.json(user);

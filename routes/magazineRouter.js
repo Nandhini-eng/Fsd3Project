@@ -28,7 +28,7 @@ magazineRouter.route('/')
 .post((req, res, next) => {
     Magazines.create(req.body)
     .then((magazine) => {
-        console.log('Magazine Created ', magazine);
+        //console.log('Magazine Created ', magazine);
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.json(magazine);
