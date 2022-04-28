@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const client = require("../models/redis.js");
 
 const Magazines = require('../models/magazines');
 
@@ -12,14 +13,20 @@ var cors = require('cors');
 
 magazineRouter.route('/')
 .options(cors(), (req,res) => {res.sendStatus(200); })
-.get((req,res,next) => {
-    Magazines.find({})
-    .then((magazines) => {
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'application/json');
-        res.json(magazines);
-    }, (err) => next(err))
-    .catch((err) => next(err));
+.get(async (req,res,next) => {
+    const redisdata = await client.get('magazines');
+    if (redisdata== null){
+        
+        const mag = await Magazines.find({})
+        await client.set('magazines',JSON.stringify(mag));
+        res.header('Content-Type', 'application/json');  
+        res.json(mag);  
+        console.log("Magazines data read from mongodb");
+    } 
+    else{
+        console.log("Magazines data read from redis cache");
+        res.json(JSON.parse(redisdata))
+    }
 })
 .put((req, res, next) => {
     res.statusCode = 403;
