@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-
+const client = require("../models/redis.js");
 const Newspapers = require('../models/newspapers');
 
 const newspaperRouter = express.Router();
@@ -12,14 +12,27 @@ var cors = require('cors');
 
 newspaperRouter.route('/')
 .options(cors(), (req,res) => {res.sendStatus(200); })
-.get((req,res,next) => {
-    Newspapers.find({})
-    .then((newspapers) => {
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'application/json');
-        res.json(newspapers);
-    }, (err) => next(err))
-    .catch((err) => next(err));
+.get(async (req,res,next) => {
+    const redisdata = await client.get('newspapers');
+    if (redisdata== null){
+        
+        const paper = await Newspapers.find({})
+        await client.set('newspapers',JSON.stringify(paper));
+        res.header('Content-Type', 'application/json');  
+        res.json(paper);  
+        console.log("Newspapers data read from mongodb");
+    } 
+    else{
+        console.log("Newspapers data read from redis cache");
+        res.json(JSON.parse(redisdata))
+    }
+    // Newspapers.find({})
+    // .then((newspapers) => {
+    //     res.statusCode = 200;
+    //     res.setHeader('Content-Type', 'application/json');
+    //     res.json(newspapers);
+    // }, (err) => next(err))
+    // .catch((err) => next(err));
 })
 .put((req, res, next) => {
     res.statusCode = 403;
