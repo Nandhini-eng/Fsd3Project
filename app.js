@@ -15,7 +15,6 @@ var feedbackRouter = require('./routes/feedbackRouter');
 var blogRouter = require('./routes/blogRouter')
 var ordersRouter=require('./routes/ordersRouter')
 
-
 var cors = require('cors');
 
 var app = express();
@@ -48,12 +47,14 @@ const mongoose = require('mongoose');
 //Provide your credentials for username,password to connect to the mongoDB Cloud
 const url = 'mongodb+srv://Nandhini:Nandy2002@cluster0.4wv9m.mongodb.net/fsd3project';
 
-const connect = mongoose.connect(url);
+  //Provide your credentials for username,password to connect to the mongoDB Cloud
+  //const url = 'mongodb+srv://bhagya:bhagya23@cluster0.4wv9m.mongodb.net/fsd3project';
 
-connect.then((db) => {
-    console.log("Connected correctly to mongodb server");
-}, (err) => { console.log(err); });
+  const connect = mongoose.connect(url);
 
+  connect.then((db) => {
+  console.log("Connected correctly to mongodb server");
+  }, (err) => { console.log(err); });
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
@@ -81,5 +82,7 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+// mongoose.disconnect();
 
 module.exports = app;

@@ -28,7 +28,7 @@ newspaperRouter.route('/')
 .post((req, res, next) => {
     Newspapers.create(req.body)
     .then((newspaper) => {
-        console.log('Newspaper Created ', newspaper);
+        //console.log('Newspaper Created ', newspaper);
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.json(newspaper);

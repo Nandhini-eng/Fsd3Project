@@ -28,7 +28,7 @@ reviewRouter.route('/')
 .post((req, res, next) => {
     Reviews.create(req.body)
     .then((review) => {
-        console.log('Review Created ', review);
+        //console.log('Review Created ', review);
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.json(review);
